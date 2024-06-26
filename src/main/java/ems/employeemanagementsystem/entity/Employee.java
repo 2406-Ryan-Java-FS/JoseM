@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -27,6 +28,13 @@ public class Employee {
     private Long employeeId;
     private String firstName;
     private String lastName;
-    private LocalDateTime hireDate;
+    private LocalDate hireDate;
     private double annualSalary;
+
+    public Employee(String firstName, String lastName, LocalDate hireDate, double annualSalary){
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.hireDate = hireDate;
+        this.annualSalary = annualSalary;
+    }
 }
