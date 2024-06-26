@@ -4,8 +4,7 @@ import ems.employeemanagementsystem.entity.Employee;
 import ems.employeemanagementsystem.service.EmployeeService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,6 +19,11 @@ public class EmployeeController {
     public ResponseEntity<List<Employee>> getAllEmployees(){
 
         return ResponseEntity.ok(employeeService.getAllEmployees());
+    }
+
+    @PostMapping("/add")
+    public ResponseEntity<Employee> addEmployee(@RequestBody Employee employee){
+        return ResponseEntity.ok(employeeService.addEmployee(employee));
     }
 
 }
