@@ -21,4 +21,10 @@ public class EmployeeService {
 
        return employeeRepository.save(employee);
     }
+
+    public Employee getEmployee(Long id){
+
+        return employeeRepository.findById(id)
+                .orElseThrow(() -> new IllegalStateException("Employee with id " + id + " not found."));
+    }
 }
