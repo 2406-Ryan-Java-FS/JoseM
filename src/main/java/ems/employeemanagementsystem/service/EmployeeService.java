@@ -1,6 +1,7 @@
 package ems.employeemanagementsystem.service;
 
 import ems.employeemanagementsystem.entity.Employee;
+import ems.employeemanagementsystem.exception.EmployeeNotFoundException;
 import ems.employeemanagementsystem.repository.EmployeeRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,13 +26,13 @@ public class EmployeeService {
     public Employee getEmployee(Long id){
 
         return employeeRepository.findById(id)
-                .orElseThrow(() -> new IllegalStateException("Employee with id " + id + " not found."));
+                .orElseThrow(() -> new EmployeeNotFoundException("Employee with id " + id + " not found."));
     }
 
     public Employee deleteEmployee(Long id){
 
         Employee employee = employeeRepository.findById(id)
-                .orElseThrow( () -> new IllegalStateException("Employee with id " + id + " does not exists."));
+                .orElseThrow( () -> new EmployeeNotFoundException("Employee with id " + id + " does not exists."));
 
         employeeRepository.deleteById(id);
 
