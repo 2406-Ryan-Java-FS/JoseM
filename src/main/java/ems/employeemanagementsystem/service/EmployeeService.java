@@ -27,4 +27,14 @@ public class EmployeeService {
         return employeeRepository.findById(id)
                 .orElseThrow(() -> new IllegalStateException("Employee with id " + id + " not found."));
     }
+
+    public Employee deleteEmployee(Long id){
+
+        Employee employee = employeeRepository.findById(id)
+                .orElseThrow( () -> new IllegalStateException("Employee with id " + id + " does not exists."));
+
+        employeeRepository.deleteById(id);
+
+        return employee;
+    }
 }
