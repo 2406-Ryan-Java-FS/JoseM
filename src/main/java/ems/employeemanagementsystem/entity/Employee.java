@@ -1,9 +1,6 @@
 package ems.employeemanagementsystem.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,10 +28,13 @@ public class Employee {
     private LocalDate hireDate;
     private double annualSalary;
 
-    public Employee(String firstName, String lastName, LocalDate hireDate, double annualSalary){
+    @ManyToOne
+    private Account account;
+    public Employee(String firstName, String lastName, LocalDate hireDate, double annualSalary, Account account){
         this.firstName = firstName;
         this.lastName = lastName;
         this.hireDate = hireDate;
         this.annualSalary = annualSalary;
+        this.account = account;
     }
 }
