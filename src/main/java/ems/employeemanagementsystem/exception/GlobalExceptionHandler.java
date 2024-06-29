@@ -14,4 +14,10 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
 
     }
+
+    @ExceptionHandler(DuplicateAccountException.class)
+    public ResponseEntity<String> handleDuplicateAccountException(DuplicateAccountException ex){
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
 }
