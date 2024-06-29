@@ -1,5 +1,5 @@
 package ems.employeemanagementsystem.role;
 
-public enum Roles {
+public enum Role {
     ROLE_USER, ROLE_ADMIN
 }
