@@ -25,17 +25,26 @@ public class EmployeeController {
 
     @PostMapping("/add")
     public ResponseEntity<Employee> addEmployee(@RequestBody Employee employee){
+
         return ResponseEntity.ok(employeeService.addEmployee(employee));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Employee> getEmployee(@PathVariable Long id){
+
         return ResponseEntity.ok(employeeService.getEmployee(id));
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Employee> deleteEmployee(@PathVariable Long id){
+
         return ResponseEntity.ok(employeeService.deleteEmployee(id));
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<Employee> updateEmployee(@RequestBody Employee employee){
+
+        return ResponseEntity.ok(employeeService.updateEmployee(employee));
     }
 
 }

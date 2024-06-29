@@ -38,4 +38,20 @@ public class EmployeeService {
 
         return employee;
     }
+
+    public Employee updateEmployee(Employee employee){
+
+        Employee updatedEmp = employeeRepository.findById(employee.getEmployeeId())
+                .orElseThrow(
+                        () -> new EmployeeNotFoundException("Employee with id "
+                                + employee.getEmployeeId() + " not found"));
+
+                updatedEmp.setFirstName(employee.getFirstName());
+                updatedEmp.setLastName(employee.getLastName());
+                updatedEmp.setHireDate(employee.getHireDate());
+                updatedEmp.setAnnualSalary(employee.getAnnualSalary());
+
+               return employeeRepository.save(updatedEmp);
+    }
+
 }
