@@ -25,9 +25,10 @@ public class Account {
     @OneToMany(mappedBy = "account")
     private List<Employee> employees;
 
-    public Account(String email, String password, List<Employee> employees){
+    public Account(String email, String password, Role role, List<Employee> employees){
         this.email = email;
         this.password = password;
+        this.role = role;
         this.employees = employees;
     }
 
