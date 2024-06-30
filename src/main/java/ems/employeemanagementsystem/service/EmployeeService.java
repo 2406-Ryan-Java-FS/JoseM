@@ -1,7 +1,10 @@
 package ems.employeemanagementsystem.service;
 
+import ems.employeemanagementsystem.entity.Account;
 import ems.employeemanagementsystem.entity.Employee;
+import ems.employeemanagementsystem.exception.AccountNotFoundException;
 import ems.employeemanagementsystem.exception.EmployeeNotFoundException;
+import ems.employeemanagementsystem.repository.AccountRepository;
 import ems.employeemanagementsystem.repository.EmployeeRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,14 +16,20 @@ import java.util.List;
 public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
+    private final AccountRepository accountRepository;
 
     public List<Employee> getAllEmployees(){
         return employeeRepository.findAll();
     }
 
-    public Employee addEmployee(Employee employee){
+    public Employee addEmployee(Employee employee, Long accountId){
 
-       return employeeRepository.save(employee);
+        Account account = accountRepository.findById(accountId)
+                .orElseThrow(() -> new AccountNotFoundException("Account with id " + accountId + " not found." ));
+
+        employee.setAccount(account);
+        account.getEmployees().add(employee);
+        return employeeRepository.save(employee);
     }
 
     public Employee getEmployee(Long id){
