@@ -21,10 +21,10 @@ public class EmployeeController {
         return ResponseEntity.ok(employeeService.getAllEmployees());
     }
 
-    @PostMapping("/add")
-    public ResponseEntity<Employee> addEmployee(@RequestBody Employee employee){
+    @PostMapping("/add/{AccountId}")
+    public ResponseEntity<Employee> addEmployee(@RequestBody Employee employee, @PathVariable Long AccountId){
 
-        return ResponseEntity.ok(employeeService.addEmployee(employee));
+        return ResponseEntity.ok(employeeService.addEmployee(employee, AccountId));
     }
 
     @GetMapping("/{id}")
