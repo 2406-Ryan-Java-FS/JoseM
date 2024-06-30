@@ -29,6 +29,7 @@ public class Employee {
     private double annualSalary;
 
     @ManyToOne
+    @JoinColumn(name = "account_id", nullable = false)
     private Account account;
     public Employee(String firstName, String lastName, LocalDate hireDate, double annualSalary, Account account){
         this.firstName = firstName;

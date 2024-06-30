@@ -22,7 +22,7 @@ public class Account {
     private String email;
     private String password;
     private Role role;
-    @OneToMany(mappedBy = "account")
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Employee> employees;
 
     public Account(String email, String password, Role role, List<Employee> employees){
