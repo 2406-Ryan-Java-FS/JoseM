@@ -60,4 +60,36 @@ public class AccountServiceTest {
         verify(accountRepository).save(any(Account.class));
     }
 
+    @Test
+    public void registerAdminShouldThrowDuplicateAccountExceptionWhenEmailAlreadyExists(){
+
+        RegistrationRequest request = new RegistrationRequest("existing@example.com", "password");
+
+        when(accountRepository.findByEmail(request.getEmail())).thenReturn(Optional.of(new Account()));
+
+        assertThrows(DuplicateAccountException.class, () -> accountService.registerAdmin(request));
+
+        verify(accountRepository, never()).save(any(Account.class));
+    }
+
+    @Test
+    public void registerAdminShouldSaveValidAccount(){
+
+        RegistrationRequest request = new RegistrationRequest("admin@example.com", "adminpassword");
+        Account account = new Account("admin@example.com", "encodedAdminPassword", Role.ROLE_ADMIN, null);
+
+        when(accountRepository.findByEmail(request.getEmail())).thenReturn(Optional.empty());
+        when(passwordEncoder.encode(request.getPassword())).thenReturn("encodedAdminPassword");
+        when(accountRepository.save(any(Account.class))).thenReturn(account);
+
+        Account savedAccount = accountService.registerAdmin(request);
+
+        assertNotNull(savedAccount);
+        assertEquals("admin@example.com", savedAccount.getEmail());
+        assertEquals("encodedAdminPassword", savedAccount.getPassword());
+        assertEquals(Role.ROLE_ADMIN, savedAccount.getRole());
+
+        verify(accountRepository).save(any(Account.class));
+    }
+
 }
