@@ -28,5 +28,18 @@ public class AccountService {
         return accountRepository.save(account);
     }
 
+    public Account registerAdmin(RegistrationRequest request) {
+
+        if (accountRepository.findByEmail(request.getEmail()).isPresent()) {
+            throw new DuplicateAccountException("Account with email "
+                    + request.getEmail() + " already exists.");
+        }
+
+        Account account = AccountMapper.toAccount(request);
+        account.setRole(Role.ROLE_ADMIN);
+
+        return accountRepository.save(account);
+    }
+
 
 }
