@@ -21,7 +21,7 @@ public class AccountService {
     private final PasswordEncoder passwordEncoder;
 
     public Account register(RegistrationRequest request) {
-        
+
         if (accountRepository.findByEmail(request.getEmail()).isPresent()) {
             throw new DuplicateAccountException("Account with email "
                     + request.getEmail() + " already exists.");
