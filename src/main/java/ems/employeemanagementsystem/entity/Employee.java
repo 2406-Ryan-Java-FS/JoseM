@@ -1,5 +1,6 @@
 package ems.employeemanagementsystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,12 +31,12 @@ public class Employee {
 
     @ManyToOne
     @JoinColumn(name = "account_id", nullable = false)
+    @JsonBackReference
     private Account account;
-    public Employee(String firstName, String lastName, LocalDate hireDate, double annualSalary, Account account){
+    public Employee(String firstName, String lastName, LocalDate hireDate, double annualSalary){
         this.firstName = firstName;
         this.lastName = lastName;
         this.hireDate = hireDate;
         this.annualSalary = annualSalary;
-        this.account = account;
     }
 }

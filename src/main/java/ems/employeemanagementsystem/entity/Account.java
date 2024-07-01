@@ -1,5 +1,6 @@
 package ems.employeemanagementsystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import ems.employeemanagementsystem.role.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -23,6 +24,7 @@ public class Account {
     private String password;
     private Role role;
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Employee> employees;
 
     public Account(String email, String password, Role role, List<Employee> employees){
