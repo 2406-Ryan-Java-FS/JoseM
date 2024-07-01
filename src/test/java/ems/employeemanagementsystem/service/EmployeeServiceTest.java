@@ -115,4 +115,45 @@ public class EmployeeServiceTest {
 
         assertNotNull(foundEmployee);
     }
+
+    @Test
+    void deleteEmployeeShouldThrowEmployeeNotFoundExceptionWhenEmployeeDoesNotExist() {
+        Long employeeId = 1L;
+
+        when(employeeRepository.findById(employeeId)).thenReturn(Optional.empty());
+
+        assertThrows(EmployeeNotFoundException.class, () -> employeeService.deleteEmployee(employeeId));
+    }
+
+    @Test
+    void deleteEmployeeShouldDeleteEmployeeWhenEmployeeExists() {
+        Long employeeId = 1L;
+
+        when(employeeRepository.findById(employeeId)).thenReturn(Optional.of(employee));
+
+        Employee deletedEmployee = employeeService.deleteEmployee(employeeId);
+
+        assertNotNull(deletedEmployee);
+        verify(employeeRepository).deleteById(employeeId);
+    }
+
+    @Test
+    void updateEmployeeShouldThrowEmployeeNotFoundExceptionWhenEmployeeDoesNotExist() {
+
+        when(employeeRepository.findById(employee.getEmployeeId())).thenReturn(Optional.empty());
+
+        assertThrows(EmployeeNotFoundException.class, () -> employeeService.updateEmployee(employee));
+    }
+
+    @Test
+    void updateEmployeeShouldUpdateEmployeeWhenEmployeeExists() {
+
+        when(employeeRepository.findById(employee.getEmployeeId())).thenReturn(Optional.of(employee));
+        when(employeeRepository.save(employee)).thenReturn(employee);
+
+        Employee updatedEmployee = employeeService.updateEmployee(employee);
+
+        assertNotNull(updatedEmployee);
+        verify(employeeRepository).save(employee);
+    }
 }
