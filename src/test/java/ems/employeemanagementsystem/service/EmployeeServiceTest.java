@@ -3,6 +3,7 @@ package ems.employeemanagementsystem.service;
 import ems.employeemanagementsystem.entity.Account;
 import ems.employeemanagementsystem.entity.Employee;
 import ems.employeemanagementsystem.exception.AccountNotFoundException;
+import ems.employeemanagementsystem.exception.EmployeeNotFoundException;
 import ems.employeemanagementsystem.exception.UnauthorizedException;
 import ems.employeemanagementsystem.repository.AccountRepository;
 import ems.employeemanagementsystem.repository.EmployeeRepository;
@@ -93,5 +94,25 @@ public class EmployeeServiceTest {
 
         assertNotNull(savedEmployee);
         verify(employeeRepository).save(employee);
+    }
+
+    @Test
+    void getEmployeeShouldThrowEmployeeNotFoundExceptionWhenEmployeeDoesNotExist() {
+        Long employeeId = 1L;
+
+        when(employeeRepository.findById(employeeId)).thenReturn(Optional.empty());
+
+        assertThrows(EmployeeNotFoundException.class, () -> employeeService.getEmployee(employeeId));
+    }
+
+    @Test
+    void getEmployeeShouldReturnEmployeeWhenEmployeeExists() {
+        Long employeeId = 1L;
+
+        when(employeeRepository.findById(employeeId)).thenReturn(Optional.of(employee));
+
+        Employee foundEmployee = employeeService.getEmployee(employeeId);
+
+        assertNotNull(foundEmployee);
     }
 }
