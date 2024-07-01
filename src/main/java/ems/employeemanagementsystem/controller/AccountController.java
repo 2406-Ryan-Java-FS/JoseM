@@ -24,4 +24,10 @@ public class AccountController {
 
         return ResponseEntity.ok(accountService.registerAdmin(request));
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<Account> login(@RequestBody Account account){
+
+        return ResponseEntity.ok(accountService.login(account));
+    }
 }

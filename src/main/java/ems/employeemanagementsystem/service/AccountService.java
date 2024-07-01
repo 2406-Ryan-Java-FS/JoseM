@@ -2,12 +2,15 @@ package ems.employeemanagementsystem.service;
 
 import ems.employeemanagementsystem.entity.Account;
 import ems.employeemanagementsystem.entity.RegistrationRequest;
+import ems.employeemanagementsystem.exception.AccountNotFoundException;
 import ems.employeemanagementsystem.exception.DuplicateAccountException;
 import ems.employeemanagementsystem.repository.AccountRepository;
 import ems.employeemanagementsystem.role.Role;
 import ems.employeemanagementsystem.util.AccountMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.nio.channels.AcceptPendingException;
 
 @AllArgsConstructor
 @Service
@@ -39,6 +42,19 @@ public class AccountService {
         account.setRole(Role.ROLE_ADMIN);
 
         return accountRepository.save(account);
+    }
+
+    public Account login(Account request){
+
+        Account account = accountRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new AccountNotFoundException("Account with email " + request.getEmail() + " not found."));
+
+        if(!account.getPassword().equals(request.getPassword())){
+            throw new IllegalArgumentException("Invalid email or password.");
+        }
+
+        return account;
+
     }
 
 
