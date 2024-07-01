@@ -4,8 +4,10 @@ import ems.employeemanagementsystem.entity.Account;
 import ems.employeemanagementsystem.entity.Employee;
 import ems.employeemanagementsystem.exception.AccountNotFoundException;
 import ems.employeemanagementsystem.exception.EmployeeNotFoundException;
+import ems.employeemanagementsystem.exception.UnauthorizedException;
 import ems.employeemanagementsystem.repository.AccountRepository;
 import ems.employeemanagementsystem.repository.EmployeeRepository;
+import ems.employeemanagementsystem.role.Role;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,9 +20,17 @@ public class EmployeeService {
     private final EmployeeRepository employeeRepository;
     private final AccountRepository accountRepository;
 
-    public List<Employee> getAllEmployees(){
+    public List<Employee> getAllEmployees(Long accountId){
+
+        Account account = accountRepository.findById(accountId)
+                .orElseThrow(() -> new AccountNotFoundException("Account with id " + accountId + " not found."));
+
+        if (account.getRole() != Role.ROLE_ADMIN) {
+            throw new UnauthorizedException("Access denied. Admin role required.");
+        }
         return employeeRepository.findAll();
     }
+
 
     public Employee addEmployee(Employee employee, Long accountId){
 

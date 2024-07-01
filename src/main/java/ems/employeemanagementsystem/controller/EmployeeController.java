@@ -15,10 +15,10 @@ public class EmployeeController {
 
     private final EmployeeService employeeService;
 
-    @GetMapping
-    public ResponseEntity<List<Employee>> getAllEmployees(){
+    @GetMapping("all/{accountId}")
+    public ResponseEntity<List<Employee>> getAllEmployees(@PathVariable Long accountId){
 
-        return ResponseEntity.ok(employeeService.getAllEmployees());
+        return ResponseEntity.ok(employeeService.getAllEmployees(accountId));
     }
 
     @PostMapping("/add/{AccountId}")
