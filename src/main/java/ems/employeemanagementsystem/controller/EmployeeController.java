@@ -15,7 +15,7 @@ public class EmployeeController {
 
     private final EmployeeService employeeService;
 
-    @RequestMapping
+    @GetMapping
     public ResponseEntity<List<Employee>> getAllEmployees(){
 
         return ResponseEntity.ok(employeeService.getAllEmployees());
