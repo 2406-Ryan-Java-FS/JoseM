@@ -5,6 +5,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * This class represents a registration request.
+ * It includes the necessary details for registering a new account such as email and password.
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

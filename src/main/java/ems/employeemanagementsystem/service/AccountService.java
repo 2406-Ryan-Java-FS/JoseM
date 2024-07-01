@@ -12,7 +12,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.nio.channels.AcceptPendingException;
-
+/**
+ * Service class for managing account related operations such as registration and login.
+ */
 @AllArgsConstructor
 @Service
 public class AccountService {
@@ -20,6 +22,13 @@ public class AccountService {
     private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
 
+    /**
+     * Registers a new user account.
+     *
+     * @param request The registration request containing user details.
+     * @return The registered Account.
+     * @throws DuplicateAccountException if an account with the given email already exists.
+     */
     public Account register(RegistrationRequest request) {
 
         if (accountRepository.findByEmail(request.getEmail()).isPresent()) {
@@ -34,6 +43,13 @@ public class AccountService {
         return accountRepository.save(account);
     }
 
+    /**
+     * Registers a new admin account.
+     *
+     * @param request The registration request containing admin details.
+     * @return The registered Account.
+     * @throws DuplicateAccountException if an account with the given email already exists.
+     */
     public Account registerAdmin(RegistrationRequest request) {
 
         if (accountRepository.findByEmail(request.getEmail()).isPresent()) {
@@ -48,6 +64,14 @@ public class AccountService {
         return accountRepository.save(account);
     }
 
+    /**
+     * Logs in with an existing account.
+     *
+     * @param request The account details for login.
+     * @return The logged-in Account.
+     * @throws AccountNotFoundException if an account with the given email is not found.
+     * @throws IllegalArgumentException if the password is incorrect.
+     */
     public Account login(Account request){
 
         Account account = accountRepository.findByEmail(request.getEmail())
