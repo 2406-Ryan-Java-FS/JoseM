@@ -8,6 +8,7 @@ import ems.employeemanagementsystem.repository.AccountRepository;
 import ems.employeemanagementsystem.role.Role;
 import ems.employeemanagementsystem.util.AccountMapper;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.nio.channels.AcceptPendingException;
@@ -17,6 +18,7 @@ import java.nio.channels.AcceptPendingException;
 public class AccountService {
 
     private final AccountRepository accountRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public Account register(RegistrationRequest request) {
 
@@ -27,6 +29,7 @@ public class AccountService {
 
         Account account = AccountMapper.toAccount(request);
         account.setRole(Role.ROLE_USER);
+        account.setPassword(passwordEncoder.encode(request.getPassword()));
 
         return accountRepository.save(account);
     }
@@ -40,6 +43,7 @@ public class AccountService {
 
         Account account = AccountMapper.toAccount(request);
         account.setRole(Role.ROLE_ADMIN);
+        account.setPassword(passwordEncoder.encode(request.getPassword()));
 
         return accountRepository.save(account);
     }
@@ -49,7 +53,7 @@ public class AccountService {
         Account account = accountRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new AccountNotFoundException("Account with email " + request.getEmail() + " not found."));
 
-        if(!account.getPassword().equals(request.getPassword())){
+        if(!passwordEncoder.matches(request.getPassword(), account.getPassword())){
             throw new IllegalArgumentException("Invalid email or password.");
         }
 
