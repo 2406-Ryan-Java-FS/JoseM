@@ -2,6 +2,7 @@ package ems.employeemanagementsystem.service;
 
 import ems.employeemanagementsystem.entity.Account;
 import ems.employeemanagementsystem.entity.Employee;
+import ems.employeemanagementsystem.exception.AccountNotFoundException;
 import ems.employeemanagementsystem.exception.UnauthorizedException;
 import ems.employeemanagementsystem.repository.AccountRepository;
 import ems.employeemanagementsystem.repository.EmployeeRepository;
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -69,5 +71,27 @@ public class EmployeeServiceTest {
 
         assertNotNull(employees);
         assertFalse(employees.isEmpty());
+    }
+
+    @Test
+    void addEmployeeShouldThrowAccountNotFoundExceptionWhenAccountDoesNotExist() {
+        Long accountId = 1L;
+
+        when(accountRepository.findById(accountId)).thenReturn(Optional.empty());
+
+        assertThrows(AccountNotFoundException.class, () -> employeeService.addEmployee(employee, accountId));
+    }
+
+    @Test
+    void addEmployeeShouldSaveEmployeeWhenAccountExists() {
+        Long accountId = 1L;
+
+        when(accountRepository.findById(accountId)).thenReturn(Optional.of(userAccount));
+        when(employeeRepository.save(employee)).thenReturn(employee);
+
+        Employee savedEmployee = employeeService.addEmployee(employee, accountId);
+
+        assertNotNull(savedEmployee);
+        verify(employeeRepository).save(employee);
     }
 }
